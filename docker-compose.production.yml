@@ -9,8 +9,9 @@ services:
     volumes:
       - ./.docker/n8n/data:/home/node/.n8n
     networks:
-      - traefik
-      - internal
+      - traefik-network
+      - postgres-network
+      - internal-network
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-network
@@ -31,6 +32,8 @@ services:
       retries: 3
 
 networks:
-  internal:
-  traefik:
+  internal-network:
+  traefik-network:
+    external: true
+  postgres-network:
     external: true
