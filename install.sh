@@ -67,6 +67,15 @@ read -rp "N8N_SMTP_USER: " N8N_SMTP_USER
 read -rsp "N8N_SMTP_PASS: " N8N_SMTP_PASS
 echo
 
+echo
+echo "--- Veritabanı ---"
+read -rp "DB_POSTGRESDB_HOST (boş bırakılırsa: postgres): " INPUT_DB_HOST
+DB_POSTGRESDB_HOST="${INPUT_DB_HOST:-postgres}"
+read -rp "DB_POSTGRESDB_USER (boş bırakılırsa: n8n): " INPUT_DB_USER
+DB_POSTGRESDB_USER="${INPUT_DB_USER:-n8n}"
+read -rsp "DB_POSTGRESDB_PASSWORD: " DB_POSTGRESDB_PASSWORD
+echo
+
 # --------------------------------------------------
 # .env Güncelle
 # --------------------------------------------------
@@ -77,11 +86,12 @@ set_env N8N_SMTP_PORT "$N8N_SMTP_PORT"
 set_env N8N_SMTP_USER "$N8N_SMTP_USER"
 set_env N8N_SMTP_PASS "$N8N_SMTP_PASS"
 
-# Secret'lar — mevcut değerlerin üzerine yazılmaz
-set_env_once N8N_ENCRYPTION_KEY    "$(gen_encryption_key)"
-set_env_once DB_POSTGRESDB_PASSWORD "$(gen_password)"
+set_env DB_POSTGRESDB_HOST     "$DB_POSTGRESDB_HOST"
+set_env DB_POSTGRESDB_USER     "$DB_POSTGRESDB_USER"
+set_env DB_POSTGRESDB_PASSWORD "$DB_POSTGRESDB_PASSWORD"
 
-DB_POSTGRESDB_PASSWORD=$(grep "^DB_POSTGRESDB_PASSWORD=" "$ENV_FILE" | cut -d'=' -f2-)
+# Secret'lar — mevcut değerlerin üzerine yazılmaz
+set_env_once N8N_ENCRYPTION_KEY "$(gen_encryption_key)"
 
 # --------------------------------------------------
 # Sonuçları Göster
@@ -92,8 +102,9 @@ echo "✅ n8n .env başarıyla hazırlandı"
 echo "-----------------------------------------------"
 echo "🌐 Hostname      : $N8N_SERVER_HOSTNAME"
 echo "📧 SMTP Host     : $N8N_SMTP_HOST:$N8N_SMTP_PORT"
-echo "📧 SMTP Kullanıcı: $N8N_SMTP_USER"
-echo "🔑 DB Şifresi    : $DB_POSTGRESDB_PASSWORD"
+echo "📧 SMTP Password : $N8N_SMTP_USER"
+echo "🗄️ DB Host       : $DB_POSTGRESDB_HOST"
+echo "👤 DB Password   : $DB_POSTGRESDB_USER"
 echo "-----------------------------------------------"
-echo "⚠️  Şifreyi güvenli bir yerde saklayın!"
+echo "⚠️ Şifreyi güvenli bir yerde saklayın!"
 echo "==============================================="
