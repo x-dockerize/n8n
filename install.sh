@@ -94,6 +94,12 @@ set_env DB_POSTGRESDB_PASSWORD "$DB_POSTGRESDB_PASSWORD"
 set_env_once N8N_ENCRYPTION_KEY "$(gen_encryption_key)"
 
 # --------------------------------------------------
+# Dizinleri Oluştur
+# --------------------------------------------------
+mkdir -p .docker/n8n/data
+chown -R 1000:1000 .docker/n8n/data
+
+# --------------------------------------------------
 # Sonuçları Göster
 # --------------------------------------------------
 echo
