@@ -15,15 +15,15 @@ services:
 
       # Router - restricted by IP
       - traefik.http.routers.n8n.rule=Host(`${N8N_SERVER_HOSTNAME:?required}`)
-      - traefik.http.routers.n8n.entrypoints=websecure
-      - traefik.http.routers.n8n.tls.certresolver=le-cloudflare
+      - traefik.http.routers.n8n.entrypoints=https
+      - traefik.http.routers.n8n.tls.certresolver=cloudflare
       - traefik.http.routers.n8n.middlewares=trusted@file
       - traefik.http.routers.n8n.service=n8n
 
       # Webhook Router - public
       - traefik.http.routers.n8n-webhook.rule=Host(`${N8N_SERVER_HOSTNAME:?required}`) && (PathPrefix(`/webhook/`) || PathPrefix(`/webhook-test/`))
-      - traefik.http.routers.n8n-webhook.entrypoints=websecure
-      - traefik.http.routers.n8n-webhook.tls.certresolver=le-cloudflare
+      - traefik.http.routers.n8n-webhook.entrypoints=https
+      - traefik.http.routers.n8n-webhook.tls.certresolver=cloudflare
       - traefik.http.routers.n8n-webhook.service=n8n
 
       # Service
